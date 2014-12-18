@@ -110,6 +110,7 @@ get '/bet' do
 end
 
 post '/bet' do
+  session[:turn] = 'betting'
   if params[:bet_amount].nil? || params[:bet_amount].to_i == 0
     @error = "Must make a bet."
     halt erb(:bet)
