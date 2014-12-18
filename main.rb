@@ -57,6 +57,7 @@ helpers do
     @show_hit_or_stay_buttons = false
     session[:player_pot] = session[:player_pot] + session[:player_bet]
     @winner = "<strong>#{session[:player_name]} wins!</strong> #{msg}"
+    session[:turn] = 'betting'
   end
 
   def loser!(msg)
@@ -64,12 +65,14 @@ helpers do
     @show_hit_or_stay_buttons = false
     session[:player_pot] = session[:player_pot] - session[:player_bet]
     @loser = "<strong>#{session[:player_name]} loses.</strong> #{msg}"
+    session[:turn] = 'betting'
   end
 
   def tie!(msg)
     @play_again = true
     @show_hit_or_stay_buttons = false
     @winner = "<strong>It's a tie!</strong> #{msg}"
+    session[:turn] = 'betting'
   end
 end
 
@@ -86,6 +89,7 @@ get '/' do
 end
 
 get '/new_player' do
+  session[:turn] = 'betting'
   session[:player_pot] = INITIAL_POT_AMOUNT
   erb :new_player
 end

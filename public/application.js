@@ -2,9 +2,23 @@ $(document).ready(function(){
   player_hits();
   player_stays();
   dealer_hit();
+  begin_round();
+
 });
 
+function begin_round(){
 
+    $(document).on('click', '#bet_form input input', function(){
+
+      $.ajax({
+        type: 'POST',
+        url: '/bet'
+      }).done(function(msg){
+        $('#game').replaceWith(msg);
+      });
+      return false;
+    });
+}
 
 function player_hits(){
   

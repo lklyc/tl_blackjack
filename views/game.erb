@@ -8,15 +8,15 @@
 
 <h1>Blackjack!</h1>
 
-<p>Welcome <%= session[:player_name] %>.</p>
-
+<h4>Welcome <%= session[:player_name] %>.</h4>
+<!--
 <% if @play_again %>
   <p>
     <strong>Play again?</strong>
     <a href="/bet" class="btn btn-primary">Yes</a>
     <a href="/game_over" class="btn"> No</a>
   </p>
-<% end %>
+<% end %>-->
 
 <div class="well" id="dealer_cards">
   <h4>Dealer's cards:</h4>
@@ -38,7 +38,6 @@
   <% end %>
 </div>
 
-
 <br/>
 <div class="well" id="player_cards">
   <h4>Player's cards:</h4>
@@ -51,21 +50,33 @@
   </h5>
 </div>
 
+<div class="well">
+  <h4>
+    <%=session[:player_name]%>'s Hand Value: [ 
+    <%=calculate_total(session[:player_cards]) %> ]
+  </h4>
+  <% if @show_hit_or_stay_buttons && session[:turn] != 'betting' %>
 
-<p>
-  What would <%= session[:player_name] %> like to do?
-<%= session[:player_name] %> has <%= calculate_total(session[:player_cards]) %>
+    <form id="hit_form" action="/game/player/hit" method='post'>
+      <input type="submit" class="btn btn-success" value="Hit" />
+    </form>
 
-<% if @show_hit_or_stay_buttons %>
+    <form id="stay_form" action="/game/player/stay" method='post'>
+      <input type="submit" class="btn btn-warning" value="Stay" />
+    </form>
 
-  <form id="hit_form" action="/game/player/hit" method='post'>
-    <input type="submit" class="btn btn-success" value="Hit" />
-  </form>
-
-  <form id="stay_form" action="/game/player/stay" method='post'>
-    <input type="submit" class="btn btn-warning" value="Stay" />
-  </form>
-
-<% end %>
-</p>
+  <% end %>
+  <br><br><br>
+  <h4>At Stake: $ <%= session[:player_bet]%></h4>
+  <h4>Pot Amount: $ <%= session[:player_pot]%></h4>
+  <% if session[:turn] == 'betting' %>
+    <div id="betting">
+      <form id="bet_form" action="/bet" method='post'>
+      <input type="text" name="bet_amount" />
+      <br/>
+      <input id="begin_round" type="submit" value="Begin Next Round" class="btn btn-primary" />
+      </form>
+    </div> <!-- betting -->
+  <% end %>
+</div>
 </div>
